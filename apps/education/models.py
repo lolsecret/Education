@@ -3,7 +3,7 @@ from django.db import models
 from apps.cources.models import Courses
 
 
-class Events(models.Model):
+class Education(models.Model):
     day = models.DateField()
     start = models.TimeField()
     finish = models.TimeField()
