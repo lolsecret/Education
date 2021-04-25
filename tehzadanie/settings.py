@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.cources',
     'apps.education',
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

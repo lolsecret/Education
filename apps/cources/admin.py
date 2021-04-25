@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from apps.cources.models import Courses, WorkTime
+
+admin.site.register(Courses)
+admin.site.register(WorkTime)

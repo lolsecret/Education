@@ -12,3 +12,7 @@ class Education(models.Model):
 
     def __str__(self):
         return str(self.cource)
+
+    class Meta:
+        verbose_name = 'Образовательный центр'
+        verbose_name_plural = 'Образовательный центр'

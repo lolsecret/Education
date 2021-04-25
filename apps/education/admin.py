@@ -1,4 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-# admin.site.register(Events)
+from apps.education.models import Education
+
+admin.site.register(Education)
