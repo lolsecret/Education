@@ -26,7 +26,7 @@ class TeacherWorkTime(models.Model):
 class Teacher(models.Model):
     user = models.OneToOneField(User, related_name='teacher', on_delete=models.CASCADE)
     cources = models.ManyToManyField(Courses, related_name='teacher')
-    work_time = models.ManyToManyField(TeacherWorkTime)
+
     def __str__(self):
         return str(self.user.first_name)
 
@@ -40,7 +40,7 @@ class StudentHour(models.Model):
     cource = models.ForeignKey(
         to=Courses, on_delete=models.CASCADE, related_name='hour', null=True,
     )
-    cource_work_time = models.ManyToManyField(TeacherWorkTime, related_name='hour', null=True)
+    cource_work_time = models.ManyToManyField(WorkTime, related_name='hour', null=True)
 
     @property
     def end_hour(self):

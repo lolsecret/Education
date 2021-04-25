@@ -29,12 +29,13 @@ class TeacherSerializer(serializers.ModelSerializer):
 class CreateCourceSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField()
     cource = StudentHourSerializer()
-
+    timeout = serializers.DateField(default=date.today())
     class Meta:
         model = Student
-        fields = ('cource', 'user_id')
+        fields = ('cource', 'user_id', 'timeout')
 
     def create(self, validated_data):
+        timeout = validated_data.pop('timeout')
         cource_id = validated_data.pop('cource')
         cource, cource_created = StudentHour.objects.get_or_create(**cource_id)
         student, created = Student.objects.get_or_create(user_id=validated_data.pop('user_id'))
@@ -51,11 +52,10 @@ class CreateCourceSerializer(serializers.ModelSerializer):
             for teacher in cource.cource.teacher.all():
                 if len(least_busy_teacher.cources.all()) < len(teacher.cources.all()):
                     least_busy_teacher = teacher
-            for t in least_busy_teacher.work_time.all():
-                if t.date_time >= date.today():
-                    work_time.append(t.date_time)
-            print(work_time)
-            cource.cource_work_time.add(work_time)
+            for t in cource.cource.work_time.all():
+                if t.date_time >= timeout:
+                    work_time.append(t.id)
+            cource.cource_work_time.add(*work_time)
 
 
             dict_cource_id = dict(cource_id)
