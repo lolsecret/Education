@@ -14,7 +14,7 @@ WEEKDAYS = [
 
 
 class WorkTime(models.Model):
-    date_time = models.DateField(default=datetime.datetime.now)
+    date_time = models.DateField(verbose_name='Дата', default=datetime.datetime.now)
 
     def __str__(self):
         return f'{self.id}, {self.date_time}'
@@ -25,9 +25,12 @@ class WorkTime(models.Model):
 
 
 class Courses(models.Model):
-    name = models.CharField(max_length=150)
-    amount_of_lessons = models.IntegerField()
-    work_time = models.ManyToManyField(WorkTime, related_name='course')
+    name = models.CharField(verbose_name='Название курса', max_length=150)
+    amount_of_lessons = models.IntegerField(verbose_name='Количество занятий', default=1)
+    work_time = models.ManyToManyField(
+        verbose_name='Даты занятий',
+        to=WorkTime, related_name='course'
+    )
 
 
     def __str__(self):

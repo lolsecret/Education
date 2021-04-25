@@ -4,16 +4,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import time
 
-
-from apps.cources.service import validate_round_hour
-import datetime as dt
-from apps.cources.models import Courses, WorkTime, WEEKDAYS
-from apps.cources.service import validate_round_hour
-from apps.users.services import TIME_CHOICES
+from apps.cources.models import Courses, WorkTime
 
 
 class TeacherWorkTime(models.Model):
-    date_time = models.DateField(default=datetime.datetime.now)
+    date_time = models.DateField(verbose_name='Дата', default=datetime.datetime.now)
 
     def __str__(self):
         return f'{self.id}, {self.date_time}'
@@ -24,8 +19,16 @@ class TeacherWorkTime(models.Model):
 
 
 class Teacher(models.Model):
-    user = models.OneToOneField(User, related_name='teacher', on_delete=models.CASCADE)
-    cources = models.ManyToManyField(Courses, related_name='teacher')
+    user = models.OneToOneField(
+        verbose_name='Пользователь',
+        to=User,
+        related_name='teacher',
+        on_delete=models.CASCADE)
+    cources = models.ManyToManyField(
+        verbose_name='Курсы',
+        to=Courses,
+        related_name='teacher'
+    )
 
     def __str__(self):
         return str(self.user.first_name)
@@ -36,11 +39,20 @@ class Teacher(models.Model):
 
 
 class StudentHour(models.Model):
-    from_hour = models.TimeField(default='0:00')
+    from_hour = models.TimeField(verbose_name='Время занятия', default='0:00')
     cource = models.ForeignKey(
-        to=Courses, on_delete=models.CASCADE, related_name='hour', null=True,
+        verbose_name='Курсы',
+        to=Courses,
+        on_delete=models.CASCADE,
+        related_name='hour',
+        null=True,
     )
-    cource_work_time = models.ManyToManyField(WorkTime, related_name='hour', null=True)
+    cource_work_time = models.ManyToManyField(
+        verbose_name='Даты уроков',
+        to=WorkTime,
+        related_name='hour',
+        null=True
+    )
 
     @property
     def end_hour(self):
@@ -58,8 +70,17 @@ class StudentHour(models.Model):
 
 
 class Student(models.Model):
-    user = models.OneToOneField(User, related_name='student', on_delete=models.CASCADE)
-    cource = models.ManyToManyField(StudentHour, related_name='student')
+    user = models.OneToOneField(
+        verbose_name='Пользователь',
+        to=User,
+        related_name='student',
+        on_delete=models.CASCADE
+    )
+    cource = models.ManyToManyField(
+        verbose_name='Курсы',
+        to=StudentHour,
+        related_name='student'
+    )
 
 
     def __str__(self):

@@ -19,11 +19,9 @@ class TeacherWorkTimeSerializer(serializers.ModelSerializer):
 
 
 class TeacherSerializer(serializers.ModelSerializer):
-    work_time = TeacherWorkTimeSerializer(many=True)
-
     class Meta:
         model = Teacher
-        fields = ('user', 'work_time')
+        fields = ('user',)
 
 
 class CreateCourceSerializer(serializers.ModelSerializer):
