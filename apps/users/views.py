@@ -43,4 +43,4 @@ class StudentCreateView(generics.CreateAPIView):
                     student.cource.add(cource)
                     break
 
-        return Response(f'Вы записались на {cource.cource.name}. Время: {cource.cource_work_time.all()}')
+        return Response(f'Вы записались на {cource.cource.name}. Время: {cource.from_hour}, Даты: {cource.cource_work_time.all()}')
